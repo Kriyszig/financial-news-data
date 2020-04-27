@@ -21,18 +21,22 @@ git clone https://github.com/Kriyszig/financial-news-data.git
 cd financial-news-data
 python3 main.py
 ```
-If you are interested in the prebuilt dataset, please visit the [parquet branch](https://github.com/Kriyszig/financial-news-data/tree/parquet)  
+
+Please note, the file generation may take upto 20 minutes.
+
+If you are interested in the prebuilt dataset to save your time, please visit the [parquet branch](https://github.com/Kriyszig/financial-news-data/tree/parquet)  
 To do it from command line, run
 
 ```bash
 git clone --single-branch --branch parquet https://github.com/Kriyszig/financial-news-data.git
+cd financial-news-data
 ```
 
 The `financial-data.parquet.gzip` is the file that contains the dataset. To create a DataFrame out of this file, please use the code snippet below:
 
 ```python
 import pandas as pd
-df = pd.read_parquet('df.parquet.gzip')
+df = pd.read_parquet('financial_data.parquet.gzip')
 ```
 And you are all set to start manipulating df to suit your needs  
 
