@@ -1,9 +1,8 @@
 import os
+import sys
 import pandas as pd
 from functools import reduce
 from typing import Union
-
-dataset_path: str = './ReutersNews106521';
 
 def validator(file_path: str) -> Union[list, bool]:
   with open(file_path, 'r') as f:
@@ -54,7 +53,7 @@ def parserecord(data: list) -> list:
 
   return result
 
-def constructdf() -> pd.DataFrame:
+def constructdf(dataset_path) -> pd.DataFrame:
   files = os.listdir(dataset_path)
   cnt_empty = 0
   final_df = pd.DataFrame()
@@ -80,6 +79,17 @@ def constructdf() -> pd.DataFrame:
 # Check if the validator works correctly by
 # going through the entire dataset
 if(__name__ == '__main__'):
+
+  dataset_path: str = 'financial-news-dataset/ReutersNews106521'
+  if(len(sys.argv) > 1):
+    dataset_path = sys.argv[1];
+
+  if(not os.path.exists(dataset_path)):
+    if(os.path.exists('ReutersNews106521')):
+      dataset_path = 'ReutersNews106521'
+    else:
+      raise Exception("Invalid dataset path!\nDataset Path: {}".format(dataset_path))
+
   files = os.listdir(dataset_path)
   cnt_empty = 0
   print('Validating unstructured data....')
@@ -106,7 +116,7 @@ if(__name__ == '__main__'):
     raise Exception("ValidatorError\nEmpty record count off. Expected 25 but found {}".format(cnt_empty))
 
   print('Constructing DataFrame for the financial data....')
-  financialdf = constructdf()
+  financialdf = constructdf(dataset_path)
   print('Finished constructing DataFrame of shape: ', financialdf.shape)
 
   print('Renaming columns....')

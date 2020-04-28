@@ -19,6 +19,7 @@ To generate the parquet file yourself, please run the following commands:
 ```bash
 git clone https://github.com/Kriyszig/financial-news-data.git
 cd financial-news-data
+git clone https://github.com/duynht/financial-news-dataset.git
 python3 main.py
 ```
 
