@@ -53,10 +53,10 @@ def parserecord(data: list) -> list:
 
   return result
 
-def constructdf(dataset_path) -> pd.DataFrame:
+def constructdf(dataset_path: str, rows: int = 106494) -> pd.DataFrame:
   files = os.listdir(dataset_path)
-  cnt_empty = 0
-  final_df = pd.DataFrame()
+  row_cnt: int = 0
+  final_list: list = [['' for i in range(5)] for j in range(rows)]
 
   for i in files:
     if(i.endswith('.DS_Store')):
@@ -65,15 +65,16 @@ def constructdf(dataset_path) -> pd.DataFrame:
     for j in nested_files:
       if(j.endswith('.gz') or j.endswith('.DS') or j.endswith('.vscode')):
         continue
-
       return_code: Union[list, bool] = validator(dataset_path + '/' + i + '/' + j)
       if(return_code == False):
         continue
       else:
         parsedrecord = parserecord(return_code)
-        final_df = pd.concat([final_df, pd.DataFrame([parsedrecord])], ignore_index = True)
+        for k in range(5):
+          final_list[row_cnt][k] = parsedrecord[k]
+        row_cnt += 1
 
-  return final_df
+  return pd.DataFrame(final_list, columns = ['Headline', 'Journalists', 'Date', 'Link', 'Article'])
 
 # Debug
 # Check if the validator works correctly by
@@ -90,8 +91,10 @@ if(__name__ == '__main__'):
     else:
       raise Exception("Invalid dataset path!\nDataset Path: {}".format(dataset_path))
 
-  files = os.listdir(dataset_path)
-  cnt_empty = 0
+  files: list = os.listdir(dataset_path)
+  cnt_empty: int = 0
+  rows: int = 0
+
   print('Validating unstructured data....')
   for i in files:
     if(i.endswith('.DS_Store')):
@@ -106,6 +109,7 @@ if(__name__ == '__main__'):
         cnt_empty += 1
       else:
         parsedrecordlen = len(parserecord(return_code))
+        rows += 1
         # Each record should have 5 columns
         # No more, no less
         # Headline, authors, date, link, body
@@ -115,11 +119,9 @@ if(__name__ == '__main__'):
   if(cnt_empty != 25):
     raise Exception("ValidatorError\nEmpty record count off. Expected 25 but found {}".format(cnt_empty))
 
+  print('Found {} valid record'.format(rows))
   print('Constructing DataFrame for the financial data....')
-  financialdf = constructdf(dataset_path)
+  financialdf = constructdf(dataset_path, rows)
   print('Finished constructing DataFrame of shape: ', financialdf.shape)
-
-  print('Renaming columns....')
-  financialdf.columns = ['Headline', 'Journalists', 'Date', 'Link', 'Article']
   print('Saving the DataFrame as a gzipped parquet....')
   financialdf.to_parquet('financial_data.parquet.gzip',compression='gzip')

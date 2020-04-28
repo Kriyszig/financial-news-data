@@ -23,7 +23,16 @@ git clone https://github.com/duynht/financial-news-dataset.git
 python3 main.py
 ```
 
-Please note, the file generation may take upto 20 minutes.
+If you have cloned the dataset at a particular `<path_to_dataset>`, you can run the program as follows pointing to the location of the dataset
+
+```bash
+python3 main.py <path_to_dataset> # Replace <path_to_dataset> with the absolute path to the ReutersNews106521 folder
+# For example
+python3 main.py /home/user/financial-news-dataset/ReutersNews106521
+```
+
+Please note, the file generation may take ~~upto 20 minutes~~. DataFrame generation now takes less than 10 seconds.
+Saving the DataFrame to gzipped parquet file takes less than a minute after optimizing memory allocation.
 
 If you are interested in the prebuilt dataset to save your time, please visit the [parquet branch](https://github.com/Kriyszig/financial-news-data/tree/parquet)  
 To do it from command line, run
