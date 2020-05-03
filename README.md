@@ -34,14 +34,6 @@ python3 main.py /home/user/financial-news-dataset/ReutersNews106521
 Please note, the file generation may take ~~upto 20 minutes~~. DataFrame generation now takes less than 10 seconds.
 Saving the DataFrame to gzipped parquet file takes less than a minute after optimizing memory allocation.
 
-If you are interested in the prebuilt dataset to save your time, please visit the [parquet branch](https://github.com/Kriyszig/financial-news-data/tree/parquet)  
-To do it from command line, run
-
-```bash
-git clone --single-branch --branch parquet https://github.com/Kriyszig/financial-news-data.git
-cd financial-news-data
-```
-
 The `financial-data.parquet.gzip` is the file that contains the dataset. To create a DataFrame out of this file, please use the code snippet below:
 
 ```python
@@ -67,3 +59,7 @@ The Dataset has the following columns:
 * Article can be an empty string in case only the headline was reported in th original dataset
 
 In case you run into any troubles, please feel free to open an issue and I'll look into it as soon as possible.
+
+### Copyright
+
+IT has come to my notice that due to the Copyright issue with the news article, the [original repository](https://github.com/philipperemy/financial-news-dataset) by [Philippe Rémy](https://github.com/philipperemy) has taken down the dataset. That being said, the repository was forked 46 times and some of these forks still contain the Reuters dataset. To avoid copyright infringement, the `parquet` branch containing the Dataset as a gzip parquet file has been removed. Due to the massive improvement in the build time, it is feasible for anyone to generate the dataset themselves even with a less powerful machine.
